@@ -12,7 +12,10 @@ export default function PageBanner({ title, bgImage }) {
       {/* Overlay */}
       <div className="page-banner-overlay"></div>
 
-      {/* Content */}
+     
+    
+
+     {/* Content */}
       <Container className="page-banner-content text-center">
         <h1>{title}</h1>
 
