@@ -20,7 +20,7 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
-  "https://harmoni-backend-25oh.onrender.com"
+  "https://harmoni-new.onrender.com"
 ];
 
 const corsOptions = {
