@@ -21,7 +21,8 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
   "https://frontend-khaki-zeta-75.vercel.app",
-  "https://steelblue-goat-719113.hostingersite.com"
+  "https://steelblue-goat-719113.hostingersite.com",
+  "https://harmoni-backend-25oh.onrender.com"
 ];
 
 const corsOptions = {
