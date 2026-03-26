@@ -147,6 +147,16 @@ export default function Profile() {
       alert("Failed to delete piano recording");
     }
   };
+  const fetchPiano = () => {
+  axios
+    .get(`${API_BASE}/api/piano`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((res) => setPianoRecordings(res.data || []))
+    .catch(() => setPianoRecordings([]));
+};
 
   /* ================= 🔥 FETCH PROFILE (FIXED) ================= */
 
@@ -202,16 +212,23 @@ export default function Profile() {
     return () => stopBeat();
   }, []);
 
+  // useEffect(() => {
+  //   axios
+  //     .get(`${API_BASE}/api/piano`, {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     })
+  //     .then((res) => setPianoRecordings(res.data || []))
+  //     .catch(() => setPianoRecordings([]));
+  // }, []);
   useEffect(() => {
-    axios
-      .get(`${API_BASE}/api/piano`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res) => setPianoRecordings(res.data || []))
-      .catch(() => setPianoRecordings([]));
-  }, []);
+  fetchPiano();
+}, []);
+useEffect(() => {
+  window.addEventListener("focus", fetchPiano);
+  return () => window.removeEventListener("focus", fetchPiano);
+}, []);
 
   if (!data) return <p style={{ color: "white" }}>Loading...</p>;
 
@@ -254,6 +271,84 @@ export default function Profile() {
             {"☆".repeat(3 - musicStars)}
           </p>
           <small>Score: {data.audioScore}/10</small>
+        </div>
+         {/* 🥁 GROOVEPAD */}
+        <div className="skill-card">
+          <h3>🎛 Saved Beats</h3>
+
+          {beats.length === 0 ? (
+            <p>No saved beats yet</p>
+          ) : (
+            beats.map((b, i) => (
+              <div key={i} className="beat-row">
+                <span>
+                  {b.name}
+                  <small style={{ marginLeft: 8, opacity: 0.6 }}>
+                    ({new Date(b.createdAt).toLocaleDateString()})
+                  </small>
+                </span>
+
+                {/* ▶ Play */}
+                <button onClick={() => playBeat(b.notes)}>
+                  ▶ Play
+                </button>
+
+                {/* ⏹ Stop (NOW AFTER PLAY) */}
+                <button
+                  onClick={stopBeat}
+                  className="stop-btn"
+                  style={{ marginLeft: 8 }}
+                >
+                  ⏹ Stop
+                </button>
+
+                {/* 🗑 Delete */}
+                <button
+                  onClick={() => deleteBeat(b._id)}
+                  style={{ marginLeft: 8 }}
+                >
+                  🗑 Delete
+                </button>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* 🎹 PIANO */}
+        <div className="skill-card">
+          <h3>🎹 Piano Recordings</h3>
+
+          {pianoRecordings.length === 0 ? (
+            <p>No piano recordings yet</p>
+          ) : (
+            pianoRecordings.map((p, i) => (
+              <div key={i} className="beat-row">
+                <span>
+                  {p.name}
+                  <small style={{ marginLeft: 8, opacity: 0.6 }}>
+                    ({new Date(p.createdAt).toLocaleDateString()})
+                  </small>
+                </span>
+
+                <button onClick={() => playPianoRecording(p.notes)}>
+                  ▶ Play
+                </button>
+                <button
+                  onClick={stopBeat}
+                  className="stop-btn"
+                  style={{ marginLeft: 8 }}
+                >
+                  ⏹ Stop
+                </button>
+                <button
+                  style={{ marginLeft: 8 }}
+                  onClick={() => deletePianoRecording(p._id)}
+                >
+                  🗑 Delete
+                </button>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </>
