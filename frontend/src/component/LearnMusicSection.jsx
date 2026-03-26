@@ -16,7 +16,7 @@ const LearnMusicSection = () => {
             </h6>
 
             <h1 className="fw-bold display-5 mb-4">
-              Learn music interactively — anytime, anywhere
+              Learn music interactively anytime, anywhere
             </h1>
 
             <p className="text-secondary mb-3">
